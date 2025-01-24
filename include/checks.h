@@ -3,6 +3,4 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
-
 bool check(struct i2c_payload *i2csim, struct i2c_payload *i2cdev);

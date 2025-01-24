@@ -20,7 +20,7 @@ bool i2c_register_read(struct i2c_payload *ptr, uint8_t device_address, uint8_t 
 
     // Set up the Read/Write Bit
 
-    uint8_t address = i2c_adding_rw_bit(device_address ,I2C_READ_BIT);
+    uint8_t address = i2c_adding_rw_bit(device_address, I2C_READ_BIT);
     uint8_t buffer[2] = {register_address, 0};
     /*
         Write the register address to the device, since we are mocking up the hardware, we will use the mock function,
@@ -143,7 +143,7 @@ bool i2c_mock_hw_read(struct i2c_payload *ptr, uint8_t *buffer, size_t length) {
 
     // Read the data from the device
     memcpy(buffer, &ptr->data, length);
-    
+
     // Check if data was read correctly
     if (buffer[0] != ptr->data) {
         perror("[i2c_mock_hw_read]: Data was not read correctly");
@@ -153,14 +153,10 @@ bool i2c_mock_hw_read(struct i2c_payload *ptr, uint8_t *buffer, size_t length) {
     return true;
 }
 
-
-
 /**
  * @brief Adds the read/write bit to the I2C device address.
  */
-uint8_t i2c_adding_rw_bit(uint8_t device_address, uint8_t rw_bit){
-    return (device_address << 1) | rw_bit;
-}
+uint8_t i2c_adding_rw_bit(uint8_t device_address, uint8_t rw_bit) { return (device_address << 1) | rw_bit; }
 
 /**
  * @brief Prints the I2C payload details.

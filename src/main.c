@@ -1,7 +1,6 @@
-#include "i2c_driver.h"
 #include "checks.h"
+#include "i2c_driver.h"
 #include <stdlib.h>
-
 
 int main() {
     struct i2c_payload i2csim;
@@ -23,7 +22,7 @@ int main() {
     temp.device_address = i2c_adding_rw_bit(device_address, I2C_READ_BIT);
     temp.register_address = register_address;
     temp.data = *data;
-    if(check(&i2csim, &temp)){
+    if (check(&i2csim, &temp)) {
         printf("[main]: I2C read is correct\n");
         print_i2c_payload(&temp);
     } else {
@@ -31,8 +30,8 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    //Write Operation
-    // Simulate device being cleared, i2c_register_write will also do it incase user forgets to clear it. 
+    // Write Operation
+    //  Simulate device being cleared, i2c_register_write will also do it incase user forgets to clear it.
     i2csim.device_address = 0;
     i2csim.register_address = 0;
     i2csim.data = 0x00;
@@ -48,10 +47,11 @@ int main() {
         return EXIT_FAILURE;
     }
 
+    // Print the I2C simulation and values to be written to the I2C device
     temp.device_address = i2c_adding_rw_bit(device_address, I2C_WRITE_BIT);
     temp.register_address = register_address;
     temp.data = write_data;
-    if(check(&i2csim, &temp)){
+    if (check(&i2csim, &temp)) {
         printf("[main]: I2C read is correct\n");
         print_i2c_payload(&temp);
     } else {
@@ -59,11 +59,8 @@ int main() {
         return EXIT_FAILURE;
     }
 
-
     // Free the allocated memory
     free(data);
 
     return EXIT_SUCCESS;
 }
-
-
