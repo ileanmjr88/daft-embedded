@@ -14,6 +14,7 @@ int main() {
     // Read a register from the I2C device
     if (!i2c_register_read(&i2csim, device_address, register_address, data)) {
         perror("[main]: Failed to read register from I2C device");
+        free(data);
         return EXIT_FAILURE;
     }
 
@@ -27,6 +28,7 @@ int main() {
         print_i2c_payload(&temp);
     } else {
         fprintf(stderr, "[%s]: I2C read is incorrect\n", __func__);
+        free(data);
         return EXIT_FAILURE;
     }
 
