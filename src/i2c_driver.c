@@ -18,8 +18,13 @@
  */
 bool i2c_register_read(struct i2c_payload *ptr, uint8_t device_address, uint8_t register_address, uint8_t *data) {
 
-    // Set up the Read/Write Bit
+    // Check if device_address is less than 7 bits
+    if (device_address >= (1 << 7)) {
+        perror("[i2c_register_read]: Device address is invalid");
+        return false;
+    }
 
+    // Set up the Read/Write Bit
     uint8_t address = i2c_adding_rw_bit(device_address, I2C_READ_BIT);
     uint8_t buffer[2] = {register_address, 0};
     /*
@@ -32,7 +37,7 @@ bool i2c_register_read(struct i2c_payload *ptr, uint8_t device_address, uint8_t 
     ptr->device_address = address; // setting up the device address with the read bit, simulation.
     ptr->register_address = 0;     // clearing the register address, simulation.
     // We will not clear ptr->data this will be set by the main function.
-    memset(data, 0, 1);
+    memset(data, 0, 1); // clear data pointer to pass back to calling function, the read opeartion of the mock function will set the data.
 
     // Write the register address to the device
     if (!i2c_mock_hw_write(ptr, &register_address, 1)) {
@@ -62,6 +67,12 @@ bool i2c_register_read(struct i2c_payload *ptr, uint8_t device_address, uint8_t 
  * @return true if the write operation was successful, false otherwise.
  */
 bool i2c_register_write(struct i2c_payload *ptr, uint8_t device_address, uint8_t register_address, uint8_t data) {
+    // Check if device_address is less than 7 bits
+    if (device_address >= (1 << 7)) {
+        perror("[i2c_register_read]: Device address is invalid");
+        return false;
+    }
+
     // Set up the Read/Write Bit
     uint8_t address = i2c_adding_rw_bit(device_address, I2C_WRITE_BIT);
 

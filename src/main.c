@@ -13,7 +13,7 @@ int main() {
 
     // Read a register from the I2C device
     if (!i2c_register_read(&i2csim, device_address, register_address, data)) {
-        perror("Failed to read register from I2C device");
+        perror("[main]: Failed to read register from I2C device");
         return EXIT_FAILURE;
     }
 
@@ -37,13 +37,13 @@ int main() {
     i2csim.data = 0x00;
 
     // Data to write to the I2C device
-    device_address = 0xF0;
+    device_address = 0x45;
     register_address = 0x10;
     uint8_t write_data = 0x55;
 
     // Write a byte of data to the I2C device
     if (!i2c_register_write(&i2csim, device_address, register_address, write_data)) {
-        perror("Failed to write data to I2C device");
+        perror("[main]: Failed to write data to I2C device");
         return EXIT_FAILURE;
     }
 
@@ -61,6 +61,5 @@ int main() {
 
     // Free the allocated memory
     free(data);
-
     return EXIT_SUCCESS;
 }
