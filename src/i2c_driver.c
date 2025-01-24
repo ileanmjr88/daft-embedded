@@ -20,7 +20,7 @@ bool i2c_register_read(struct i2c_payload *ptr, uint8_t device_address, uint8_t 
 
     // Check if device_address is less than 7 bits
     if (device_address >= (1 << 7)) {
-        perror("[i2c_register_read]: Device address is invalid");
+        fprintf(stderr, "[%s]: Device address is invalid", __func__);
         return false;
     }
 
@@ -41,13 +41,13 @@ bool i2c_register_read(struct i2c_payload *ptr, uint8_t device_address, uint8_t 
 
     // Write the register address to the device
     if (!i2c_mock_hw_write(ptr, &register_address, 1)) {
-        perror("[i2c_register_read]: Failed to write register address to device");
+        fprintf(stderr, "[%s]: Failed to write register address to device", __func__);
         return false;
     }
 
     // Read the data from the device, pasisng the buffer and the length of the buffer, to verify I am reading the correct register
     if (!i2c_mock_hw_read(ptr, data, 1)) {
-        perror("[i2c_register_read]: Failed to read data from device");
+        fprintf(stderr, "[%s]: Failed to read data from device", __func__);
         return false;
     }
 
@@ -69,7 +69,7 @@ bool i2c_register_read(struct i2c_payload *ptr, uint8_t device_address, uint8_t 
 bool i2c_register_write(struct i2c_payload *ptr, uint8_t device_address, uint8_t register_address, uint8_t data) {
     // Check if device_address is less than 7 bits
     if (device_address >= (1 << 7)) {
-        perror("[i2c_register_read]: Device address is invalid");
+        fprintf(stderr, "[%s]: Device address is invalid", __func__);
         return false;
     }
 
@@ -91,7 +91,7 @@ bool i2c_register_write(struct i2c_payload *ptr, uint8_t device_address, uint8_t
 
     // Write the register address to the device
     if (!i2c_mock_hw_write(ptr, buffer, 2)) {
-        perror("Failed to write register address to device");
+        fprintf(stderr, "Failed to write register address to device", __func__);
         return false;
     }
     return true;
@@ -116,7 +116,7 @@ bool i2c_mock_hw_write(struct i2c_payload *ptr, uint8_t *buffer, size_t length) 
         // Setting the register to be read
         ptr->register_address = buffer[0];
         if (ptr->register_address != buffer[0]) {
-            perror("[i2c_mock_hw_write]: Register address was not set correctly");
+            fprintf(stderr, "[%s]: Register address was not set correctly", __func__);
             return false;
         }
     } else {
@@ -125,7 +125,7 @@ bool i2c_mock_hw_write(struct i2c_payload *ptr, uint8_t *buffer, size_t length) 
         // Writing data
         ptr->data = buffer[1];
         if (ptr->register_address != buffer[0] || ptr->data != buffer[1]) {
-            perror("[i2c_mock_hw_write]: Register address or data was not set correctly");
+            fprintf(stderr, "[%s]: Register address or data was not set correctly", __func__);
             return false;
         }
     }
@@ -148,7 +148,7 @@ bool i2c_mock_hw_read(struct i2c_payload *ptr, uint8_t *buffer, size_t length) {
     // Check if the device address has the read bit set if not functions was used in error
     // or error with device
     if (!(ptr->device_address & I2C_READ_BIT) || length != 1) {
-        perror("[i2c_mock_hw_read]: Device address does not have read bit set");
+        fprintf(stderr, "[%s]: Device address does not have read bit set", __func__);
         return false;
     }
 
@@ -157,7 +157,7 @@ bool i2c_mock_hw_read(struct i2c_payload *ptr, uint8_t *buffer, size_t length) {
 
     // Check if data was read correctly
     if (buffer[0] != ptr->data) {
-        perror("[i2c_mock_hw_read]: Data was not read correctly");
+        fprintf(stderr, "[%s]: Data was not read correctly", __func__);
         return false;
     }
 

@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(i2cdriver VERSION 1.0 LANGUAGES C)
 
 # Specify the C standard
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
 # Add the executable

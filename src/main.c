@@ -23,10 +23,10 @@ int main() {
     temp.register_address = register_address;
     temp.data = *data;
     if (check(&i2csim, &temp)) {
-        printf("[main]: I2C read is correct\n");
+        fprintf(stdout, "[%s]: I2C read is correct\n", __func__);
         print_i2c_payload(&temp);
     } else {
-        perror("[main]: Failed to check I2C payload\n");
+        fprintf(stderr, "[%s]: I2C read is incorrect\n", __func__);
         return EXIT_FAILURE;
     }
 
@@ -43,7 +43,7 @@ int main() {
 
     // Write a byte of data to the I2C device
     if (!i2c_register_write(&i2csim, device_address, register_address, write_data)) {
-        perror("[main]: Failed to write data to I2C device");
+        fprintf(stderr, "[%s]: Failed to write data to I2C device\n", __func__);
         return EXIT_FAILURE;
     }
 
@@ -52,10 +52,10 @@ int main() {
     temp.register_address = register_address;
     temp.data = write_data;
     if (check(&i2csim, &temp)) {
-        printf("[main]: I2C read is correct\n");
+        fprintf(stdout, "[%s]: I2C write is correct\n", __func__);
         print_i2c_payload(&temp);
     } else {
-        perror("[main]: Failed to check I2C payload\n");
+        fprintf(stderr, "[%s]: I2C write is incorrect\n", __func__);
         return EXIT_FAILURE;
     }
 
