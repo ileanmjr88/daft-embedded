@@ -44,6 +44,7 @@ int main() {
     // Write a byte of data to the I2C device
     if (!i2c_register_write(&i2csim, device_address, register_address, write_data)) {
         fprintf(stderr, "[%s]: Failed to write data to I2C device\n", __func__);
+        free(data);
         return EXIT_FAILURE;
     }
 
@@ -56,6 +57,7 @@ int main() {
         print_i2c_payload(&temp);
     } else {
         fprintf(stderr, "[%s]: I2C write is incorrect\n", __func__);
+        free(data);
         return EXIT_FAILURE;
     }
 
